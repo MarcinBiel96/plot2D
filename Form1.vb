@@ -1,9 +1,11 @@
 ﻿
 Public Class Form1
-    ReadOnly dataset(3, 10000) As Double
+    Private dataset(,) As Double
     ReadOnly gridcolor As Color = Color.FromArgb(30, 30, 30)
     ReadOnly plotcolor(3) As Color
-    Private Xscale As Double = 1 / 500
+    ReadOnly PlotEnabled(3) As Boolean
+    Private DANE(,) As Short
+    Private Xscale As Double = 1
     Private IsOffsetChanged As Boolean = False
     Private IsMagnificationChanged As Boolean = False
     Private IsMarkerMoved As Boolean = False
@@ -24,13 +26,8 @@ Public Class Form1
     Private tmpval1 As Double
     Private tmpval2 As Double
     Private ps As Integer = 0
+    Private linksamples As Boolean
     Private Sub Form1_Load(sender As Object, e As EventArgs) Handles MyBase.Load
-        For i = 0 To 10000
-            dataset(0, i) = Math.Sin(i / 60) * 100 + 20
-            dataset(1, i) = Math.Sin(i / 30) * 50
-            dataset(2, i) = Math.Sin(i / 80) * 70
-            dataset(3, i) = Math.Sin(i / 100) * 20
-        Next
         plotcolor(0) = Color.Lime
         plotcolor(1) = Color.Yellow
         plotcolor(2) = Color.Blue
@@ -39,7 +36,14 @@ Public Class Form1
         RadioButton2.ForeColor = plotcolor(1)
         RadioButton3.ForeColor = plotcolor(2)
         RadioButton4.ForeColor = plotcolor(3)
-        AutoZoom(3)
+        ComboBox1.ForeColor = plotcolor(0)
+        ComboBox2.ForeColor = plotcolor(1)
+        ComboBox3.ForeColor = plotcolor(2)
+        ComboBox4.ForeColor = plotcolor(3)
+        ComboBox1.SelectedIndex = 0
+        ComboBox2.SelectedIndex = 0
+        ComboBox3.SelectedIndex = 0
+        ComboBox4.SelectedIndex = 0
     End Sub
     Private Sub PanelDB1_Paint(sender As Object, e As PaintEventArgs) Handles PanelDB1.Paint
         Dim bmp As New Bitmap(PanelDB1.Width, PanelDB1.Height)
@@ -63,31 +67,52 @@ Public Class Form1
         Label8.Text = Format((-bmpheight / 4 - offy) / magy, "0.0000")
         Label9.Text = Format((-bmpheight / 2 - offy) / magy, "0.0000")
 
-        Label10.Text = Format(offx / magx, "0.0000")
+        Label10.Text = Format(offx / magx * Xscale, "0.0000")
         Label11.Text = Format((bmpwidth / 4 + offx) / magx * Xscale, "0.0000")
         Label12.Text = Format((bmpwidth / 2 + offx) / magx * Xscale, "0.0000")
         Label13.Text = Format((bmpwidth * 3 / 4 + offx) / magx * Xscale, "0.0000")
         Label14.Text = Format((bmpwidth + offx) / magx * Xscale, "0.0000")
 
+        Dim ff As Double
+        Dim f As Double
         For count = 0 To 3
-            If count = ps Then tmp = -1
+            If PlotEnabled(count) Then
+                If count = ps Then tmp = -1
 
-            For i = 0 To dataset.Length / 4 - 1
-                d = (i * magx) - offx
-                If d >= 0 Then
-                    dd = dataset(count, i) * -magy - offy + (bmpheight - 1) / 2
-                End If
-                If d >= 0 AndAlso d < bmpwidth - 1 AndAlso dd >= 0 AndAlso dd < bmpheight - 1 Then
-                    bmp.SetPixel(d, dd, plotcolor(count))
-                    If MouseDownX = d \ 1 AndAlso IsMarkerMoved AndAlso count = ps Then
-                        tmp = d
-                        tmp2 = dd
-                        tmpval1 = i
-                        tmpval2 = dataset(count, i)
-
+                For i = 0 To dataset.Length / 4 - 1
+                    d = (i * magx) - offx
+                    If d >= 0 Then
+                        dd = dataset(count, i) * -magy - offy + (bmpheight - 1) / 2
                     End If
-                End If
-            Next
+                    If d >= 0 AndAlso d < bmpwidth - 1 AndAlso dd >= 0 AndAlso dd < bmpheight - 1 Then
+                        bmp.SetPixel(d, dd, plotcolor(count))
+                        If linksamples Then
+                            If dd > ff Then
+                                For z = ff To dd
+                                    If z < bmpheight - 1 AndAlso z > 0 AndAlso i >= 1 Then
+                                        bmp.SetPixel(d, z, plotcolor(count))
+                                    End If
+                                Next
+                            ElseIf dd < ff Then
+                                For z = dd To ff
+                                    If z < bmpheight - 1 AndAlso z > 0 AndAlso i >= 1 Then
+                                        bmp.SetPixel(d, z, plotcolor(count))
+                                    End If
+                                Next
+                            End If
+                        End If
+                        If MouseDownX = d \ 1 AndAlso IsMarkerMoved AndAlso count = ps Then
+                                tmp = d
+                                tmp2 = dd
+                                tmpval1 = i
+                                tmpval2 = dataset(count, i)
+
+                            End If
+                        End If
+                        ff = dd
+                    f = d
+                Next
+            End If
         Next
 
         Label15.Visible = False
@@ -184,7 +209,7 @@ Public Class Form1
     End Sub
     Private Sub Form1_Resize(sender As Object, e As EventArgs) Handles Me.Resize
         PanelDB1.Width = Width - 112
-        PanelDB1.Height = Height - 176 - 32
+        PanelDB1.Height = Height - 176 - 32 - 16
         Label5.Location = (New Point(16, (PanelDB1.Bottom - PanelDB1.Top + 20) / 2))
         Label6.Location = (New Point(16, (PanelDB1.Top) - 6))
         Label9.Location = (New Point(16, (PanelDB1.Bottom - 7)))
@@ -216,23 +241,225 @@ Public Class Form1
     Private Sub RadioButton4_CheckedChanged(sender As Object, e As EventArgs) Handles RadioButton4.CheckedChanged
         ps = 3
     End Sub
-
     Private Sub Button1_Click(sender As Object, e As EventArgs) Handles Button1.Click
         AutoZoom(3)
 
     End Sub
-
     Private Sub PanelDB1_MouseWheel(sender As Object, e As MouseEventArgs) Handles PanelDB1.MouseWheel
         MagyWrite(magy * 1.05 ^ (e.Delta / SystemInformation.MouseWheelScrollDelta))
         Refresh()
     End Sub
-
     Private Sub Button2_Click(sender As Object, e As EventArgs) Handles Button2.Click
         AutoZoom(1)
     End Sub
-
     Private Sub Button3_Click(sender As Object, e As EventArgs) Handles Button3.Click
         AutoZoom(2)
     End Sub
+    Sub Mbj(filename As String)
+        Dim Sign(31) As Byte
+        Dim Format As Short
+        Dim RozmiarNagl As Short
+        Dim Ext(3) As Byte
+        Dim tihour As Byte
+        Dim timin As Byte
+        Dim tisec As Byte
+        Dim tihund As Short
+        Dim dayear As Short
+        Dim daday As Byte
+        Dim damon As Byte
+        Dim CardSampleFreq As Double
+        Dim kanMax As Byte
+        Dim ACBits As Short
 
+        Dim WspX() As Double
+        Dim WspY() As Double
+        Dim WspZ() As Double
+        Dim TypPrzetw() As Byte
+        Dim Skladowa() As Byte
+        Dim WzmocnienieToru() As Double
+        Dim CzulSejKsd() As Double
+        Dim TlumienieD() As Double
+        Dim EngAK() As Double
+
+        Dim EngK() As Double
+        Dim EngX() As Double
+        Dim EngA() As Double
+        Dim EngB() As Double
+
+        Dim rezerwa1() As Double
+        Dim rezerwa2() As Double
+        Dim rezerwa3() As Double
+        Dim rezerwa4() As Double
+        Dim rezerwa5(67) As Byte
+
+        Dim kanal_export() As Short
+
+        Dim Dlugosc As Long
+
+        FileOpen(1, filename, OpenMode.Binary, OpenAccess.Read)
+        Dlugosc = LOF(1)
+
+        FileGet(1, Sign)
+        FileGet(1, Format)
+        FileGet(1, RozmiarNagl)
+        FileGet(1, Ext)
+        FileGet(1, tihour)
+        FileGet(1, timin)
+        FileGet(1, tisec)
+        FileGet(1, tihund)
+        FileGet(1, dayear)
+        FileGet(1, daday)
+        FileGet(1, damon)
+        FileGet(1, CardSampleFreq)
+        FileGet(1, kanMax)
+        FileGet(1, ACBits)
+
+        ReDim WspX(kanMax - 1)
+        ReDim WspY(kanMax - 1)
+        ReDim WspZ(kanMax - 1)
+        ReDim TypPrzetw(kanMax - 1)
+        ReDim Skladowa(kanMax - 1)
+        ReDim WzmocnienieToru(kanMax - 1)
+        ReDim CzulSejKsd(kanMax - 1)
+        ReDim TlumienieD(kanMax - 1)
+        ReDim EngAK(kanMax - 1)
+        ReDim EngK(kanMax - 1)
+        ReDim EngX(kanMax - 1)
+        ReDim EngA(kanMax - 1)
+        ReDim EngB(kanMax - 1)
+        ReDim rezerwa1(kanMax - 1)
+        ReDim rezerwa2(kanMax - 1)
+        ReDim rezerwa3(kanMax - 1)
+        ReDim rezerwa4(kanMax - 1)
+
+        FileGet(1, WspX)
+        FileGet(1, WspY)
+        FileGet(1, WspZ)
+        FileGet(1, TypPrzetw)
+        FileGet(1, Skladowa)
+        FileGet(1, WzmocnienieToru)
+        FileGet(1, CzulSejKsd)
+        FileGet(1, TlumienieD)
+        FileGet(1, EngAK)
+        FileGet(1, EngK)
+        FileGet(1, EngX)
+        FileGet(1, EngA)
+        FileGet(1, EngB)
+        FileGet(1, rezerwa1)
+        FileGet(1, rezerwa2)
+        FileGet(1, rezerwa3)
+        FileGet(1, rezerwa4)
+
+        Xscale = 1 / CardSampleFreq
+        Dlugosc = (Dlugosc - RozmiarNagl) / 128
+        ReDim DANE(kanMax - 1, Dlugosc - 1)
+
+        Seek(1, RozmiarNagl + 1)
+        FileGet(1, DANE)
+        FileClose(1)
+
+        ReDim kanal_export(Dlugosc - 1)
+        For i = 0 To Dlugosc - 1
+            kanal_export(i) = DANE(32 - 1, i)
+        Next i
+    End Sub
+    Private Sub OpenFileDialog1_FileOk(sender As Object, e As System.ComponentModel.CancelEventArgs) Handles OpenFileDialog1.FileOk
+        Mbj(OpenFileDialog1.FileNames(0))
+        ReDim dataset(3, DANE.Length / 64 - 1)
+        ComboBox1.Enabled = True
+        ComboBox2.Enabled = True
+        ComboBox3.Enabled = True
+        ComboBox4.Enabled = True
+        ComboBox1.SelectedIndex = 0
+        ComboBox2.SelectedIndex = 0
+        ComboBox3.SelectedIndex = 0
+        ComboBox4.SelectedIndex = 0
+        ComboBox1.SelectedIndex = 1
+        AutoZoom(3)
+    End Sub
+    Private Sub Button4_Click(sender As Object, e As EventArgs) Handles Button4.Click
+        OpenFileDialog1.ShowDialog()
+    End Sub
+    Private Sub ComboBox1_SelectedIndexChanged(sender As Object, e As EventArgs) Handles ComboBox1.SelectedIndexChanged
+        If ComboBox1.SelectedIndex = 0 Then
+            PlotEnabled(0) = False
+            RadioButton1.Enabled = False
+        Else
+            PlotEnabled(0) = True
+            RadioButton1.Enabled = True
+            For i = 0 To DANE.Length / 64 - 1
+                dataset(0, i) = DANE(ComboBox1.SelectedIndex - 1, i) / 65536 * 20
+            Next i
+        End If
+        Refresh()
+    End Sub
+    Private Sub ComboBox2_SelectedIndexChanged(sender As Object, e As EventArgs) Handles ComboBox2.SelectedIndexChanged
+        If ComboBox2.SelectedIndex = 0 Then
+            PlotEnabled(1) = False
+            RadioButton2.Enabled = False
+        Else
+            PlotEnabled(1) = True
+            RadioButton2.Enabled = True
+            For i = 0 To DANE.Length / 64 - 1
+                dataset(1, i) = DANE(ComboBox2.SelectedIndex - 1, i) / 65536 * 20
+            Next i
+        End If
+        Refresh()
+    End Sub
+    Private Sub ComboBox3_SelectedIndexChanged(sender As Object, e As EventArgs) Handles ComboBox3.SelectedIndexChanged
+        If ComboBox3.SelectedIndex = 0 Then
+            PlotEnabled(2) = False
+            RadioButton3.Enabled = False
+        Else
+            PlotEnabled(2) = True
+            RadioButton3.Enabled = True
+            For i = 0 To DANE.Length / 64 - 1
+                dataset(2, i) = DANE(ComboBox3.SelectedIndex - 1, i) / 65536 * 20
+            Next i
+        End If
+        Refresh()
+    End Sub
+    Private Sub ComboBox4_SelectedIndexChanged(sender As Object, e As EventArgs) Handles ComboBox4.SelectedIndexChanged
+        If ComboBox4.SelectedIndex = 0 Then
+            PlotEnabled(3) = False
+            RadioButton4.Enabled = False
+        Else
+            PlotEnabled(3) = True
+            RadioButton4.Enabled = True
+            For i = 0 To DANE.Length / 64 - 1
+                dataset(3, i) = DANE(ComboBox4.SelectedIndex - 1, i) / 65536 * 20
+            Next i
+        End If
+        Refresh()
+    End Sub
+    Private Sub Form1_DragDrop(sender As Object, e As DragEventArgs) Handles Me.DragDrop
+        Dim files() As String = e.Data.GetData(DataFormats.FileDrop)
+        If files.Length = 1 Then
+            If files(0).Contains(".mbj") Then
+                Mbj(files(0))
+                ReDim dataset(3, DANE.Length / 64 - 1)
+                ComboBox1.Enabled = True
+                ComboBox2.Enabled = True
+                ComboBox3.Enabled = True
+                ComboBox4.Enabled = True
+                ComboBox1.SelectedIndex = 0
+                ComboBox2.SelectedIndex = 0
+                ComboBox3.SelectedIndex = 0
+                ComboBox4.SelectedIndex = 0
+                ComboBox1.SelectedIndex = 1
+                AutoZoom(3)
+            End If
+        End If
+
+    End Sub
+    Private Sub Form1_DragEnter(sender As Object, e As DragEventArgs) Handles Me.DragEnter
+
+        If e.Data.GetDataPresent(DataFormats.FileDrop) Then
+            e.Effect = DragDropEffects.Copy
+        End If
+    End Sub
+    Private Sub CheckBox1_CheckedChanged(sender As Object, e As EventArgs) Handles CheckBox1.CheckedChanged
+        linksamples = CheckBox1.Checked
+        Refresh()
+    End Sub
 End Class

@@ -35,6 +35,11 @@ Partial Class Form1
         Me.Label13 = New System.Windows.Forms.Label()
         Me.Label14 = New System.Windows.Forms.Label()
         Me.GroupBox1 = New System.Windows.Forms.GroupBox()
+        Me.ComboBox4 = New System.Windows.Forms.ComboBox()
+        Me.ComboBox3 = New System.Windows.Forms.ComboBox()
+        Me.ComboBox2 = New System.Windows.Forms.ComboBox()
+        Me.ComboBox1 = New System.Windows.Forms.ComboBox()
+        Me.Button4 = New System.Windows.Forms.Button()
         Me.Button3 = New System.Windows.Forms.Button()
         Me.RadioButton1 = New System.Windows.Forms.RadioButton()
         Me.Button2 = New System.Windows.Forms.Button()
@@ -42,6 +47,8 @@ Partial Class Form1
         Me.Button1 = New System.Windows.Forms.Button()
         Me.RadioButton3 = New System.Windows.Forms.RadioButton()
         Me.RadioButton4 = New System.Windows.Forms.RadioButton()
+        Me.OpenFileDialog1 = New System.Windows.Forms.OpenFileDialog()
+        Me.CheckBox1 = New System.Windows.Forms.CheckBox()
         Me.PanelDB1.SuspendLayout()
         Me.GroupBox1.SuspendLayout()
         Me.SuspendLayout()
@@ -157,6 +164,12 @@ Partial Class Form1
         '
         'GroupBox1
         '
+        Me.GroupBox1.Controls.Add(Me.CheckBox1)
+        Me.GroupBox1.Controls.Add(Me.ComboBox4)
+        Me.GroupBox1.Controls.Add(Me.ComboBox3)
+        Me.GroupBox1.Controls.Add(Me.ComboBox2)
+        Me.GroupBox1.Controls.Add(Me.ComboBox1)
+        Me.GroupBox1.Controls.Add(Me.Button4)
         Me.GroupBox1.Controls.Add(Me.Button3)
         Me.GroupBox1.Controls.Add(Me.RadioButton1)
         Me.GroupBox1.Controls.Add(Me.Button2)
@@ -167,14 +180,68 @@ Partial Class Form1
         Me.GroupBox1.ForeColor = System.Drawing.Color.Transparent
         Me.GroupBox1.Location = New System.Drawing.Point(106, 282)
         Me.GroupBox1.Name = "GroupBox1"
-        Me.GroupBox1.Size = New System.Drawing.Size(200, 118)
+        Me.GroupBox1.Size = New System.Drawing.Size(392, 133)
         Me.GroupBox1.TabIndex = 11
         Me.GroupBox1.TabStop = False
+        '
+        'ComboBox4
+        '
+        Me.ComboBox4.BackColor = System.Drawing.Color.FromArgb(CType(CType(31, Byte), Integer), CType(CType(31, Byte), Integer), CType(CType(31, Byte), Integer))
+        Me.ComboBox4.Enabled = False
+        Me.ComboBox4.FormattingEnabled = True
+        Me.ComboBox4.Items.AddRange(New Object() {"Disabled", "Channel 1", "Channel 2", "Channel 3", "Channel 4", "Channel 5", "Channel 6", "Channel 7", "Channel 8", "Channel 9", "Channel 10", "Channel 11", "Channel 12", "Channel 13", "Channel 14", "Channel 15", "Channel 16", "Channel 17", "Channel 18", "Channel 19", "Channel 20", "Channel 21", "Channel 22", "Channel 23", "Channel 24", "Channel 25", "Channel 26", "Channel 27", "Channel 28", "Channel 29", "Channel 30", "Channel 31", "Channel 32", "Channel 33", "Channel 34", "Channel 35", "Channel 36", "Channel 37", "Channel 38", "Channel 39", "Channel 40", "Channel 41", "Channel 42", "Channel 43", "Channel 44", "Channel 45", "Channel 46", "Channel 47", "Channel 48", "Channel 49", "Channel 50", "Channel 51", "Channel 52", "Channel 53", "Channel 54", "Channel 55", "Channel 56", "Channel 57", "Channel 58", "Channel 59", "Channel 60", "Channel 61", "Channel 62", "Channel 63", "Channel 64"})
+        Me.ComboBox4.Location = New System.Drawing.Point(6, 99)
+        Me.ComboBox4.Name = "ComboBox4"
+        Me.ComboBox4.Size = New System.Drawing.Size(121, 21)
+        Me.ComboBox4.TabIndex = 13
+        '
+        'ComboBox3
+        '
+        Me.ComboBox3.BackColor = System.Drawing.Color.FromArgb(CType(CType(31, Byte), Integer), CType(CType(31, Byte), Integer), CType(CType(31, Byte), Integer))
+        Me.ComboBox3.Enabled = False
+        Me.ComboBox3.FormattingEnabled = True
+        Me.ComboBox3.Items.AddRange(New Object() {"Disabled", "Channel 1", "Channel 2", "Channel 3", "Channel 4", "Channel 5", "Channel 6", "Channel 7", "Channel 8", "Channel 9", "Channel 10", "Channel 11", "Channel 12", "Channel 13", "Channel 14", "Channel 15", "Channel 16", "Channel 17", "Channel 18", "Channel 19", "Channel 20", "Channel 21", "Channel 22", "Channel 23", "Channel 24", "Channel 25", "Channel 26", "Channel 27", "Channel 28", "Channel 29", "Channel 30", "Channel 31", "Channel 32", "Channel 33", "Channel 34", "Channel 35", "Channel 36", "Channel 37", "Channel 38", "Channel 39", "Channel 40", "Channel 41", "Channel 42", "Channel 43", "Channel 44", "Channel 45", "Channel 46", "Channel 47", "Channel 48", "Channel 49", "Channel 50", "Channel 51", "Channel 52", "Channel 53", "Channel 54", "Channel 55", "Channel 56", "Channel 57", "Channel 58", "Channel 59", "Channel 60", "Channel 61", "Channel 62", "Channel 63", "Channel 64"})
+        Me.ComboBox3.Location = New System.Drawing.Point(6, 72)
+        Me.ComboBox3.Name = "ComboBox3"
+        Me.ComboBox3.Size = New System.Drawing.Size(121, 21)
+        Me.ComboBox3.TabIndex = 13
+        '
+        'ComboBox2
+        '
+        Me.ComboBox2.BackColor = System.Drawing.Color.FromArgb(CType(CType(31, Byte), Integer), CType(CType(31, Byte), Integer), CType(CType(31, Byte), Integer))
+        Me.ComboBox2.Enabled = False
+        Me.ComboBox2.FormattingEnabled = True
+        Me.ComboBox2.Items.AddRange(New Object() {"Disabled", "Channel 1", "Channel 2", "Channel 3", "Channel 4", "Channel 5", "Channel 6", "Channel 7", "Channel 8", "Channel 9", "Channel 10", "Channel 11", "Channel 12", "Channel 13", "Channel 14", "Channel 15", "Channel 16", "Channel 17", "Channel 18", "Channel 19", "Channel 20", "Channel 21", "Channel 22", "Channel 23", "Channel 24", "Channel 25", "Channel 26", "Channel 27", "Channel 28", "Channel 29", "Channel 30", "Channel 31", "Channel 32", "Channel 33", "Channel 34", "Channel 35", "Channel 36", "Channel 37", "Channel 38", "Channel 39", "Channel 40", "Channel 41", "Channel 42", "Channel 43", "Channel 44", "Channel 45", "Channel 46", "Channel 47", "Channel 48", "Channel 49", "Channel 50", "Channel 51", "Channel 52", "Channel 53", "Channel 54", "Channel 55", "Channel 56", "Channel 57", "Channel 58", "Channel 59", "Channel 60", "Channel 61", "Channel 62", "Channel 63", "Channel 64"})
+        Me.ComboBox2.Location = New System.Drawing.Point(6, 45)
+        Me.ComboBox2.Name = "ComboBox2"
+        Me.ComboBox2.Size = New System.Drawing.Size(121, 21)
+        Me.ComboBox2.TabIndex = 13
+        '
+        'ComboBox1
+        '
+        Me.ComboBox1.BackColor = System.Drawing.Color.FromArgb(CType(CType(31, Byte), Integer), CType(CType(31, Byte), Integer), CType(CType(31, Byte), Integer))
+        Me.ComboBox1.Enabled = False
+        Me.ComboBox1.FormattingEnabled = True
+        Me.ComboBox1.Items.AddRange(New Object() {"Disabled", "Channel 1", "Channel 2", "Channel 3", "Channel 4", "Channel 5", "Channel 6", "Channel 7", "Channel 8", "Channel 9", "Channel 10", "Channel 11", "Channel 12", "Channel 13", "Channel 14", "Channel 15", "Channel 16", "Channel 17", "Channel 18", "Channel 19", "Channel 20", "Channel 21", "Channel 22", "Channel 23", "Channel 24", "Channel 25", "Channel 26", "Channel 27", "Channel 28", "Channel 29", "Channel 30", "Channel 31", "Channel 32", "Channel 33", "Channel 34", "Channel 35", "Channel 36", "Channel 37", "Channel 38", "Channel 39", "Channel 40", "Channel 41", "Channel 42", "Channel 43", "Channel 44", "Channel 45", "Channel 46", "Channel 47", "Channel 48", "Channel 49", "Channel 50", "Channel 51", "Channel 52", "Channel 53", "Channel 54", "Channel 55", "Channel 56", "Channel 57", "Channel 58", "Channel 59", "Channel 60", "Channel 61", "Channel 62", "Channel 63", "Channel 64"})
+        Me.ComboBox1.Location = New System.Drawing.Point(6, 18)
+        Me.ComboBox1.Name = "ComboBox1"
+        Me.ComboBox1.Size = New System.Drawing.Size(121, 21)
+        Me.ComboBox1.TabIndex = 13
+        '
+        'Button4
+        '
+        Me.Button4.ForeColor = System.Drawing.Color.Black
+        Me.Button4.Location = New System.Drawing.Point(206, 99)
+        Me.Button4.Name = "Button4"
+        Me.Button4.Size = New System.Drawing.Size(86, 23)
+        Me.Button4.TabIndex = 12
+        Me.Button4.Text = "Open file"
+        Me.Button4.UseVisualStyleBackColor = True
         '
         'Button3
         '
         Me.Button3.ForeColor = System.Drawing.Color.Black
-        Me.Button3.Location = New System.Drawing.Point(108, 77)
+        Me.Button3.Location = New System.Drawing.Point(206, 72)
         Me.Button3.Name = "Button3"
         Me.Button3.Size = New System.Drawing.Size(86, 23)
         Me.Button3.TabIndex = 12
@@ -185,7 +252,8 @@ Partial Class Form1
         '
         Me.RadioButton1.AutoSize = True
         Me.RadioButton1.Checked = True
-        Me.RadioButton1.Location = New System.Drawing.Point(10, 19)
+        Me.RadioButton1.Enabled = False
+        Me.RadioButton1.Location = New System.Drawing.Point(133, 19)
         Me.RadioButton1.Name = "RadioButton1"
         Me.RadioButton1.Size = New System.Drawing.Size(67, 17)
         Me.RadioButton1.TabIndex = 0
@@ -196,7 +264,7 @@ Partial Class Form1
         'Button2
         '
         Me.Button2.ForeColor = System.Drawing.Color.Black
-        Me.Button2.Location = New System.Drawing.Point(108, 48)
+        Me.Button2.Location = New System.Drawing.Point(206, 46)
         Me.Button2.Name = "Button2"
         Me.Button2.Size = New System.Drawing.Size(86, 23)
         Me.Button2.TabIndex = 12
@@ -206,7 +274,8 @@ Partial Class Form1
         'RadioButton2
         '
         Me.RadioButton2.AutoSize = True
-        Me.RadioButton2.Location = New System.Drawing.Point(10, 42)
+        Me.RadioButton2.Enabled = False
+        Me.RadioButton2.Location = New System.Drawing.Point(133, 46)
         Me.RadioButton2.Name = "RadioButton2"
         Me.RadioButton2.Size = New System.Drawing.Size(67, 17)
         Me.RadioButton2.TabIndex = 0
@@ -217,7 +286,7 @@ Partial Class Form1
         'Button1
         '
         Me.Button1.ForeColor = System.Drawing.Color.Black
-        Me.Button1.Location = New System.Drawing.Point(108, 19)
+        Me.Button1.Location = New System.Drawing.Point(206, 19)
         Me.Button1.Name = "Button1"
         Me.Button1.Size = New System.Drawing.Size(86, 23)
         Me.Button1.TabIndex = 12
@@ -227,7 +296,8 @@ Partial Class Form1
         'RadioButton3
         '
         Me.RadioButton3.AutoSize = True
-        Me.RadioButton3.Location = New System.Drawing.Point(10, 65)
+        Me.RadioButton3.Enabled = False
+        Me.RadioButton3.Location = New System.Drawing.Point(133, 73)
         Me.RadioButton3.Name = "RadioButton3"
         Me.RadioButton3.Size = New System.Drawing.Size(67, 17)
         Me.RadioButton3.TabIndex = 0
@@ -238,7 +308,8 @@ Partial Class Form1
         'RadioButton4
         '
         Me.RadioButton4.AutoSize = True
-        Me.RadioButton4.Location = New System.Drawing.Point(10, 88)
+        Me.RadioButton4.Enabled = False
+        Me.RadioButton4.Location = New System.Drawing.Point(133, 100)
         Me.RadioButton4.Name = "RadioButton4"
         Me.RadioButton4.Size = New System.Drawing.Size(67, 17)
         Me.RadioButton4.TabIndex = 0
@@ -246,8 +317,24 @@ Partial Class Form1
         Me.RadioButton4.Text = "Marker 4"
         Me.RadioButton4.UseVisualStyleBackColor = True
         '
+        'OpenFileDialog1
+        '
+        Me.OpenFileDialog1.FileName = "Open file..."
+        Me.OpenFileDialog1.Filter = "MBJ files | *.mbj"
+        '
+        'CheckBox1
+        '
+        Me.CheckBox1.AutoSize = True
+        Me.CheckBox1.Location = New System.Drawing.Point(298, 25)
+        Me.CheckBox1.Name = "CheckBox1"
+        Me.CheckBox1.Size = New System.Drawing.Size(87, 17)
+        Me.CheckBox1.TabIndex = 14
+        Me.CheckBox1.Text = "Link samples"
+        Me.CheckBox1.UseVisualStyleBackColor = True
+        '
         'Form1
         '
+        Me.AllowDrop = True
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.BackColor = System.Drawing.Color.FromArgb(CType(CType(31, Byte), Integer), CType(CType(31, Byte), Integer), CType(CType(31, Byte), Integer))
@@ -297,4 +384,11 @@ Partial Class Form1
     Friend WithEvents Button1 As Button
     Friend WithEvents Button2 As Button
     Friend WithEvents Button3 As Button
+    Friend WithEvents OpenFileDialog1 As OpenFileDialog
+    Friend WithEvents Button4 As Button
+    Friend WithEvents ComboBox4 As ComboBox
+    Friend WithEvents ComboBox3 As ComboBox
+    Friend WithEvents ComboBox2 As ComboBox
+    Friend WithEvents ComboBox1 As ComboBox
+    Friend WithEvents CheckBox1 As CheckBox
 End Class
